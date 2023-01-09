@@ -130,6 +130,7 @@ export default function App() {
               {item.combination.map((item) => symbols[item])}
             </div>
           ))}
+          <div class="payout-table-row">{symbols[0]}❓❓</div>
         </div>
 
         <div className="puyout-table-col">
@@ -137,6 +138,7 @@ export default function App() {
           {payoutTable.map((item) => (
             <div class="payout-table-row">${item.amount}</div>
           ))}
+          <div class="payout-table-row">${(1.25 * 1).toFixed(2)}</div>
         </div>
 
         <div className="puyout-table-col">
@@ -144,6 +146,7 @@ export default function App() {
           {payoutTable.map((item) => (
             <div class="payout-table-row">${item.amount * 2}</div>
           ))}
+          <div class="payout-table-row">${(1.25 * 2).toFixed(2)}</div>
         </div>
 
         <div className="puyout-table-col">
@@ -151,6 +154,7 @@ export default function App() {
           {payoutTable.map((item) => (
             <div class="payout-table-row">${item.amount * 3}</div>
           ))}
+          <div class="payout-table-row">${(1.25 * 3).toFixed(2)}</div>
         </div>
       </div>
     </div>

@@ -76,7 +76,6 @@ button:active {
 
 .payout-table-header {
   font-size: 0.8rem;
-  padding: 0 1.5rem;
   font-weight: 700;
 }
 
@@ -88,6 +87,6 @@ button:active {
   border-bottom: 1px solid;
   height: 40px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-end;
 }
