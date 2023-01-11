@@ -13,16 +13,19 @@ const State = Object.freeze({
 });
 
 export default function App() {
-  const SPIN_DURATION = 2000;
+  const SPIN_DURATION = 1000;
   const SPIN_VELOCITY = 100;
   const SPIN_INTERVAL = useRef();
   const COST_PER_SPIN = 0.25;
+  const MAX_BET = 3;
 
   const stateRef = useRef(State.IDLE);
 
-  const [reels, setReels] = useState([0, 1, 2]);
-  const [balance, setBalance] = useState(0);
+  const [reels, setReels] = useState([7, 1, 2]);
+  const [credit, setCredit] = useState(0);
   const [betAmount, setBetAmount] = useState(1);
+  const [win, setWin] = useState(0);
+  const [log, setLog] = useState([]);
 
   const getPayout = (reels) => {
     const combination = reels.map((item) => reelIndex[item]);
@@ -37,7 +40,9 @@ export default function App() {
   };
 
   const spin = () => {
-    setBalance((s) => s - COST_PER_SPIN * betAmount);
+    if (betAmount * COST_PER_SPIN > credit) return;
+
+    setCredit((s) => s - COST_PER_SPIN * betAmount);
 
     let reelsTemp = reels;
 
@@ -65,9 +70,8 @@ export default function App() {
         stateRef.current === State.SLOWING &&
         random.toString() === reelsTemp.toString()
       ) {
-        setBalance((s) => getPayout(reelsTemp) + s);
-
-        setBetAmount(1);
+        const payout = getPayout(reelsTemp);
+        setWin((s) => payout + s);
 
         clearInterval(SPIN_INTERVAL.current);
         stateRef.current = State.IDLE;
@@ -76,39 +80,47 @@ export default function App() {
   };
 
   const coin = () => {
-    setBalance((s) => (s += 0.25));
+    setCredit((s) => (s += 0.25));
   };
 
-  const bet = () => {
-    if (betAmount * COST_PER_SPIN >= balance) return;
-    setBetAmount((s) => (s < 3 ? ++s : 1));
+  const handleBet = () => {
+    setBetAmount((s) => (s < MAX_BET ? ++s : 1));
   };
 
   return (
     <div className="machine">
-      <div className="container">
+      <div className="container line">
         {reels.map((index, key) => (
           <Reel key={key} index={index} />
         ))}
       </div>
 
       <div className="container">
-        <div className="bet-amount">Bet: ${(betAmount * 0.25).toFixed(2)}</div>
-        <div className="balance">Balance: ${balance.toFixed(2)}</div>
+        <div className="bet-amount">
+          <div className="label">Bet</div>
+          <div>${(betAmount * 0.25).toFixed(2)}</div>
+        </div>
+        <div className="win">
+          <div className="label">Win</div>
+          <div>${win.toFixed(2)}</div>
+        </div>
+        <div className="credit">
+          <div className="label">Credit</div> <div>${credit.toFixed(2)}</div>
+        </div>
       </div>
 
       <div className="container">
         <button
           className="bet"
           disabled={stateRef.current !== State.IDLE}
-          onClick={bet}
+          onClick={handleBet}
         >
           {betAmount}
         </button>
 
         <button
           className="spin"
-          disabled={stateRef.current !== State.IDLE || !balance}
+          disabled={stateRef.current !== State.IDLE || !credit}
           onClick={spin}
         >
           SPIN
@@ -126,35 +138,35 @@ export default function App() {
       <div className="payout-table">
         <div className="puyout-table-col">
           {payoutTable.map((item) => (
-            <div class="payout-table-row">
+            <div className="payout-table-row">
               {item.combination.map((item) => symbols[item])}
             </div>
           ))}
-          <div class="payout-table-row">{symbols[0]}❓❓</div>
+          <div className="payout-table-row">{symbols[0]}❓❓</div>
         </div>
 
         <div className="puyout-table-col">
           <div className="payout-table-header">1 Credit</div>
           {payoutTable.map((item) => (
-            <div class="payout-table-row">${item.amount}</div>
+            <div className="payout-table-row">${item.amount}</div>
           ))}
-          <div class="payout-table-row">${(1.25 * 1).toFixed(2)}</div>
+          <div className="payout-table-row">${(0.5 * 1).toFixed(2)}</div>
         </div>
 
         <div className="puyout-table-col">
           <div className="payout-table-header">2 Credit</div>
           {payoutTable.map((item) => (
-            <div class="payout-table-row">${item.amount * 2}</div>
+            <div className="payout-table-row">${item.amount * 2}</div>
           ))}
-          <div class="payout-table-row">${(1.25 * 2).toFixed(2)}</div>
+          <div className="payout-table-row">${(0.5 * 2).toFixed(2)}</div>
         </div>
 
         <div className="puyout-table-col">
           <div className="payout-table-header">3 Credit</div>
           {payoutTable.map((item) => (
-            <div class="payout-table-row">${item.amount * 3}</div>
+            <div className="payout-table-row">${item.amount * 3}</div>
           ))}
-          <div class="payout-table-row">${(1.25 * 3).toFixed(2)}</div>
+          <div className="payout-table-row">${(0.5 * 3).toFixed(2)}</div>
         </div>
       </div>
     </div>

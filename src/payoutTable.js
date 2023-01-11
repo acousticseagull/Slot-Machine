@@ -1,6 +1,10 @@
 export const payoutTable = [
   {
     combination: [5, 5, 5],
+    amount: 500,
+  },
+  {
+    combination: [7, 7, 7],
     amount: 100,
   },
   {
@@ -9,18 +13,18 @@ export const payoutTable = [
   },
   {
     combination: [3, 3, 3],
-    amount: 25,
+    amount: 20,
   },
   {
     combination: [2, 2, 2],
-    amount: 10,
+    amount: 15,
   },
   {
     combination: [1, 1, 1],
-    amount: 5,
+    amount: 10,
   },
   {
     combination: [0, 0, 0],
-    amount: 3,
+    amount: 4,
   },
 ];
