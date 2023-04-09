@@ -137,8 +137,8 @@ export default function App() {
 
       <div className="payout-table">
         <div className="puyout-table-col">
-          {payoutTable.map((item) => (
-            <div className="payout-table-row">
+          {payoutTable.map((item, key) => (
+            <div key={key} className="payout-table-row">
               {item.combination.map((item) => symbols[item])}
             </div>
           ))}
@@ -147,24 +147,30 @@ export default function App() {
 
         <div className="puyout-table-col">
           <div className="payout-table-header">1 Credit</div>
-          {payoutTable.map((item) => (
-            <div className="payout-table-row">${item.amount}</div>
+          {payoutTable.map((item, key) => (
+            <div key={key} className="payout-table-row">
+              ${item.amount}
+            </div>
           ))}
           <div className="payout-table-row">${(0.5 * 1).toFixed(2)}</div>
         </div>
 
         <div className="puyout-table-col">
           <div className="payout-table-header">2 Credit</div>
-          {payoutTable.map((item) => (
-            <div className="payout-table-row">${item.amount * 2}</div>
+          {payoutTable.map((item, key) => (
+            <div key={key} className="payout-table-row">
+              ${item.amount * 2}
+            </div>
           ))}
           <div className="payout-table-row">${(0.5 * 2).toFixed(2)}</div>
         </div>
 
         <div className="puyout-table-col">
           <div className="payout-table-header">3 Credit</div>
-          {payoutTable.map((item) => (
-            <div className="payout-table-row">${item.amount * 3}</div>
+          {payoutTable.map((item, key) => (
+            <div key={key} className="payout-table-row">
+              ${item.amount * 3}
+            </div>
           ))}
           <div className="payout-table-row">${(0.5 * 3).toFixed(2)}</div>
         </div>
